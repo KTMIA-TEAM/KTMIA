@@ -1,0 +1,16 @@
+{
+    "dataset_name": "cifar100",
+    "model_name": "resnet50",
+    "epochs": 150,
+    "num_cls": 100,
+    "input_dim": 3,
+    "optimizer": "sgd",
+    "scheduler": "cosine",
+    "lr": 0.1,
+    "trans_optimizer": "adam",
+    "trans_scheduler": "",
+    "trans_lr": 0.001,
+    "weight_decay": 5e-4,
+    "transfer_layer_list": ["layer3", "layer4", "fc"],
+    "total_layer_list": ["conv1", "layer1", "layer2", "layer3", "layer4", "fc"]
+}
