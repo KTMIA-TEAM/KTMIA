@@ -54,18 +54,15 @@ class BaseModel:
             print("{}: Accuracy {:.3f}, Loss {:.3f}".format(log_pref, acc, total_loss))
         return acc, total_loss
 
-    def kt_attack_train(self, train_loader, log_pref=""):
+    def attack_train(self, train_loader, log_pref=""):
         self.model.train()
         total_loss = 0
         correct = 0
         total = 0
-        for inputs, trans_inputs, targets in train_loader:
-            inputs = inputs.to(self.device)
-            trans_inputs = trans_inputs.to(self.device) 
-            targets = targets.to(self.device)
-            inputs_list = [inputs, trans_inputs]
+        for inputs, targets in train_loader:
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
             self.optimizer.zero_grad()
-            outputs = self.model(inputs_list)
+            outputs = self.model(inputs)
             loss = self.criterion(outputs, targets)
             loss.backward()
             self.optimizer.step()
@@ -102,18 +99,15 @@ class BaseModel:
             print("{}: Accuracy {:.3f}, Loss {:.3f}".format(log_pref, acc, total_loss))
         return acc, total_loss
 
-    def kt_attack_test(self, test_loader, log_pref=""):
+    def attack_test(self, test_loader, log_pref=""):
         self.model.eval()
         total_loss = 0
         correct = 0
         total = 0
         with torch.no_grad():
-            for batch_idx, (inputs, trans_inputs, targets) in enumerate(test_loader):
-                inputs = inputs.to(self.device)
-                trans_inputs = trans_inputs.to(self.device)
-                targets = targets.to(self.device)
-                new_inputs = [inputs, trans_inputs]
-                outputs = self.model(new_inputs)
+            for batch_idx, (inputs, targets) in enumerate(test_loader):
+                inputs, targets = inputs.to(self.device), targets.to(self.device)
+                outputs = self.model(inputs)
                 loss = self.criterion(outputs, targets)
                 total_loss += loss.item() * targets.size(0)
                 correct += torch.sum(torch.round(torch.sigmoid(outputs)) == targets)

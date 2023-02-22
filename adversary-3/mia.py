@@ -105,16 +105,16 @@ def main(args):
             continue
         save_folder = f"{base_folder}/{layer}"
 
-        # Load Transfer-Distill Victim
-        trans_victim_model_path = f"{save_folder}/transfer-distill_victim_model/best.pth"
+        # Load Transfer Victim
+        trans_victim_model_path = f"{save_folder}/transfer_victim_model/best.pth"
         print(f"Load Transfer Victim Model from {trans_victim_model_path}")
         trans_victim_model = BaseModel(args.model_name, num_cls=args.num_cls, input_dim=args.input_dim, device=device)
         trans_victim_model.load(trans_victim_model_path)
         trans_victim_model.test(trans_train_loader, "Transfer Victim Model Train")
         trans_victim_model.test(trans_test_loader, "Transfer Victim Model Test")
 
-        # Load Transfer-Distill Shadow
-        trans_shadow_model_path = f"{save_folder}/transfer-distill_shadow_model/best.pth"
+        # Load Transfer Shadow
+        trans_shadow_model_path = f"{save_folder}/transfer_shadow_model/best.pth"
         print(f"Load Transfer Shadow Model From {trans_shadow_model_path}")
         trans_shadow_model = BaseModel(args.model_name, num_cls=args.num_cls, input_dim=args.input_dim, device=device)
         trans_shadow_model.load(trans_shadow_model_path)
